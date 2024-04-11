@@ -6,13 +6,15 @@ import { toast, Toaster } from "react-hot-toast";
 function HomePage() {
   const [data, setData] = useState(null);
   const { id } = useParams();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [password, setPassword] = useState("");
+  const [deleteItemId, setDeleteItemId] = useState(null); // State variable to store the id of the item to be deleted
 
   // Get Tool
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:3000");
-        // const response = await axios.get(`https://devtools-be.onrender.com`);
         setData(response.data);
       } catch (error) {
         console.log({ Error: error.message });
@@ -23,19 +25,32 @@ function HomePage() {
     fetchData();
   }, [id]);
 
-  // Delete Tool
-  const deleteToolPost = async (id) => {
+  const handleDeleteClick = (id) => {
+    setDeleteItemId(id); // Store the id of the item to be deleted
+    setPasswordVisible(true); // Show the password input modal
+  };
+
+  const deleteTool = async () => {
+    if (password !== "DevTools123") {
+      toast.error("Incorrect password.");
+      return;
+    }
+
     try {
-      await axios.delete(`http://localhost:3000/delete/${id}`);
-      setData(data.filter((tool) => tool._id !== id));
+      await axios.delete(`http://localhost:3000/delete/${deleteItemId}`);
+      setData(data.filter((tool) => tool._id !== deleteItemId)); // Update data state after deletion
       toast.success("The tool has been dequeued.");
     } catch (error) {
       console.log({ Error: error.message });
       toast.error("The tool was not dequeued.");
+    } finally {
+      setPassword(""); // Clear password input
+      setPasswordVisible(false); // Hide password input modal
+      setDeleteItemId(null); // Reset delete item id
     }
   };
 
-  if (!data) return null; // Return early if data is null
+  if (!data) return null;
 
   const reverseData = [...data].reverse();
 
@@ -59,7 +74,7 @@ function HomePage() {
                       {note.category}
                     </a>
                     <button
-                      onClick={() => deleteToolPost(note._id)}
+                      onClick={() => handleDeleteClick(note._id)} // Pass the id to handleDeleteClick function
                       className="bg-red-500 text-white px-4 py-1 rounded-md">
                       Delete
                     </button>
@@ -76,13 +91,40 @@ function HomePage() {
                   Explore{" "}
                   <img
                     className="w-[10px] invert"
-                    src="/icons/right-arrow.png"></img>
+                    src="/icons/right-arrow.png"
+                    alt="arrow"></img>
                 </a>
               </div>
             ))}
           </div>
         </div>
       </div>
+      {passwordVisible && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-8 rounded-lg flex flex-col gap-4">
+            <h2 className="text-lg font-bold">Enter Password</h2>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-lg ring-1 ring-[#b7b7b7]"
+            />
+            <div className="flex justify-between">
+              <button
+                onClick={() => setPasswordVisible(false)}
+                className="text-gray-500 mr-4">
+                Cancel
+              </button>
+              <button
+                onClick={deleteTool}
+                className="bg-red-500 text-white px-4 py-2 rounded">
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Toaster />
     </>
   );
