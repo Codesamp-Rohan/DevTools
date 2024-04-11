@@ -9,16 +9,14 @@ dotenv.config();
 
 const server = express();
 
-// const corsOptions = {
-//   origin: [
-//     "http://localhost:3000",
-//    "https://devtools-1tmh.onrender.com"], // frontend URI (ReactJS)
-// };
+const corsOptions = {
+  origin: ["http://localhost:3000", "https://devtools-1tmh.onrender.com"], // frontend URI (ReactJS)
+};
 
 server.use(express.json());
 server.use(bodyParser.json());
-// server.use(cors(corsOptions));
-server.use(cors());
+server.use(cors(corsOptions));
+// server.use(cors());
 
 server.use("/", ToolRouter);
 
