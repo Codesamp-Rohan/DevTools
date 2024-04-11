@@ -9,3 +9,16 @@ label {
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
 }
+.edit--btn {
+  opacity: 0;
+  pointer-events: none;
+}
+.tool--card {
+  &:hover {
+    .edit--btn {
+      transition: 300ms;
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}

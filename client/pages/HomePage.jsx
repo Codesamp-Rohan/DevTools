@@ -59,12 +59,12 @@ function HomePage() {
     <>
       <div className="flex justify-center items-center">
         <div className="flex flex-wrap justify-center w-fit">
-          <div className="flex flex-wrap justify-start">
+          <div className="flex flex-wrap justify-center md:justify-start">
             {reverseData.map((note, index) => (
               <div
                 key={index}
-                className="w-[350px] ring-1 ring-[#b2b2b2] p-4 rounded-2xl m-6 flex flex-col justify-between gap-4">
-                <span className="flex flex-col gap-4">
+                className="w-[350px] ring-1 ring-[#b2b2b2] p-4 rounded-2xl m-6 flex flex-col justify-between gap-4 tool--card">
+                <span className="flex flex-col gap-4 relative">
                   <img
                     className="tool--image ring-1 ring-[#b2b2b2] h-[180px] object-cover"
                     src={note.image}
@@ -101,7 +101,7 @@ function HomePage() {
         </div>
       </div>
       {passwordVisible && (
-        <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-[100]">
           <div className="bg-white p-8 rounded-lg flex flex-col gap-4 w-[400px]">
             <h2 className="text-lg font-bold">Enter Password</h2>
             <input

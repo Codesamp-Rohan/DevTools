@@ -40,7 +40,7 @@ const Form = () => {
 
   return (
     <div className="flex justify-center items-center h-[80vh]">
-      <div className="flex flex-col items-start gap-4 w-[95%] md:w-[40%]">
+      <div className="flex flex-col items-start gap-4 w-[100%] md:w-[40%]">
         <p className="font-semibold">
           You just got new stuff to show? Enter it down here😁
         </p>
@@ -94,16 +94,21 @@ const Form = () => {
             />
           </span>
           <span>
-            <label>Category</label>
-            <input
-              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-lg ring-1 ring-[#b7b7b7]"
-              name="category"
+            <label htmlFor="category">Choose a category:</label>
+            <select
               id="category"
-              type="text"
+              name="category"
+              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-lg ring-1 ring-[#b7b7b7]"
               value={formData.category}
-              onChange={handleChange}
-              placeholder="category"
-            />
+              onChange={handleChange}>
+              <option value="">Select a category*</option>
+              <option value="UI/UX">UI/UX</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Designing">Designing</option>
+              <option value="Software Development">Software Development</option>
+              <option value="Deployment">Deployment</option>
+              <option value="Other">Other</option>
+            </select>
           </span>
           <button
             type="submit"
