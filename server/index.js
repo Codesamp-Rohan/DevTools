@@ -10,7 +10,7 @@ dotenv.config();
 const server = express();
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://devtools-1tmh.onrender.com"], // frontend URI (ReactJS)
+  origin: ["http://localhost:3000", "https://devtools-cl.onrender.com"], // frontend URI (ReactJS)
 };
 
 server.use(express.json());
