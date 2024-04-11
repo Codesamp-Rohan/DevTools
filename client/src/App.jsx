@@ -1,0 +1,24 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // corrected import
+import Navbar from "../components/Navbar";
+import "./App.css";
+import HomePage from "../pages/HomePage";
+import Form from "../pages/Form";
+import { createContext } from "react";
+
+export const ToolContext = createContext({});
+
+function App() {
+  return (
+    <>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/create" element={<Form />} />
+        </Routes>
+      </Router>
+    </>
+  );
+}
+
+export default App;

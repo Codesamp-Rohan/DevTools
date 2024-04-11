@@ -1,0 +1,11 @@
+label {
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+}
+.tool--image {
+  border-top-right-radius: 13px;
+  border-top-left-radius: 13px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
