@@ -14,8 +14,8 @@ function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get("http://localhost:3000");
-        const response = await axios.get(`https://devtools-be.onrender.com`);
+        const response = await axios.get("http://localhost:3000");
+        // const response = await axios.get(`https://devtools-be.onrender.com`);
         setData(response.data);
       } catch (error) {
         console.log({ Error: error.message });
@@ -102,14 +102,14 @@ function HomePage() {
       </div>
       {passwordVisible && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded-lg flex flex-col gap-4">
+          <div className="bg-white p-8 rounded-lg flex flex-col gap-4 w-[400px]">
             <h2 className="text-lg font-bold">Enter Password</h2>
             <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-lg ring-1 ring-[#b7b7b7]"
+              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-md ring-1 ring-[#b7b7b7]"
             />
             <div className="flex justify-between">
               <button
