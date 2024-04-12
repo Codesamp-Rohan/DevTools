@@ -10,6 +10,8 @@ function HomePage() {
   const [password, setPassword] = useState("");
   const [deleteItemId, setDeleteItemId] = useState(null); // State variable to store the id of the item to be deleted
 
+  const [menu, setMenu] = useState(false);
+
   // Get Tool
   useEffect(() => {
     const fetchData = async () => {
@@ -56,11 +58,40 @@ function HomePage() {
 
   const reverseData = [...data].reverse();
 
+  const calculateDaysAgo = (date) => {
+    const now = new Date();
+    const postDate = new Date(date);
+    const diffTime = Math.abs(now - postDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays} days ago`;
+  };
+
   return (
     <>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center relative">
+        <button
+          onClick={() => setMenu(true)}
+          className="w-[20px] absolute top-2 right-2 flex z-[30]">
+          <img src="/icons/menu.png"></img>
+        </button>
+        <span
+          className="fixed top-10 right-4 flex flex-col items-center border-[0.8px] border-[#282828] w-[300px] p-10 mt-10 bg-[#eee] z-30"
+          style={{ display: menu ? "flex" : "none" }}>
+          <button
+            onClick={() => setMenu(false)}
+            className="absolute top-2 right-4">
+            X
+          </button>
+
+          {/* <h1 className="hover:bg-[#ddd] w-full mx-2 p-2">hello</h1> */}
+          {reverseData.map((note, index) => (
+            <a key={index} className="hover:bg-[#ddd] w-full mx-2 p-2">
+              {note.title}
+            </a>
+          ))}
+        </span>
         <div className="flex flex-row justify-center w-fit">
-          <div className="flex flex-wrap justify-center md:justify-start">
+          <div className="flex flex-wrap justify-center md:justify-start relative">
             {reverseData.map((note, index) => (
               <div
                 key={index}
@@ -86,28 +117,22 @@ function HomePage() {
                   </h1>
                   <p className="monsy text-[0.85rem]">{note.about}</p>
                 </span>
-                <a
-                  href={note.url}
-                  target="_blank"
-                  className="bg-[#282828] w-full p-2 text-white rounded-lg flex items-center gap-2 monsy">
-                  Explore{" "}
-                  <img
-                    className="w-[10px] invert"
-                    src="/icons/right-arrow.png"
-                    alt="arrow"></img>
-                </a>
-                <h1>Posted {note.createdAt}</h1>
+                <span className="flex flex-col gap-2">
+                  <h1>{calculateDaysAgo(note.date)}</h1>{" "}
+                  <a
+                    href={note.url}
+                    target="_blank"
+                    className="bg-[#282828] w-full p-2 text-white rounded-lg flex items-center gap-2 monsy">
+                    Explore{" "}
+                    <img
+                      className="w-[10px] invert"
+                      src="/icons/right-arrow.png"
+                      alt="arrow"></img>
+                  </a>
+                </span>
               </div>
             ))}
           </div>
-          <span className="w-[100%] lg:w-[85%] xl:w-[30%] hidden md:flex flex-col items-center border-x-[0.8px] border-x-[#282828] pt-10">
-            {/* <h1 className="hover:bg-[#ddd] w-full mx-2 p-2">hello</h1> */}
-            {reverseData.map((note, index) => (
-              <a key={index} className="hover:bg-[#ddd] w-full mx-2 p-2">
-                {note.title}
-              </a>
-            ))}
-          </span>
         </div>
       </div>
       {passwordVisible && (

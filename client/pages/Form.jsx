@@ -9,6 +9,7 @@ const Form = () => {
     about: "",
     url: "",
     category: "",
+    date: "",
   });
 
   const handleChange = (event) => {
@@ -91,6 +92,18 @@ const Form = () => {
               value={formData.url}
               onChange={handleChange}
               placeholder="url"
+            />
+          </span>
+          <span>
+            <label>Date of Adding</label>
+            <input
+              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-lg ring-1 ring-[#b7b7b7]"
+              name="date"
+              id="date"
+              type="date"
+              value={formData.date}
+              onChange={handleChange}
+              placeholder="date"
             />
           </span>
           <span>
