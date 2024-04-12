@@ -40,7 +40,7 @@ const Form = () => {
 
   return (
     <div className="flex justify-center items-center h-[80vh]">
-      <div className="flex flex-col items-start gap-4 w-[100%] md:w-[40%]">
+      <div className="flex flex-col items-start gap-4 w-[90%] md:w-[40%]">
         <p className="font-semibold">
           You just got new stuff to show? Enter it down here😁
         </p>
@@ -107,6 +107,7 @@ const Form = () => {
               <option value="Designing">Designing</option>
               <option value="Software Development">Software Development</option>
               <option value="Deployment">Deployment</option>
+              <option value="AI Tool">AI Tool</option>
               <option value="Other">Other</option>
             </select>
           </span>

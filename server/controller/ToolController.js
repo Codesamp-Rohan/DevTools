@@ -9,6 +9,8 @@ const formatToolDataToSend = (tool) => {
     about: tool.about,
     url: tool.url,
     category: tool.category,
+    createdAt: tool.createdAt,
+    updatedAt: tool.updatedAt,
   };
 };
 
@@ -23,7 +25,8 @@ const getToolPost = async (req, res) => {
 
 const createToolPost = async (req, res) => {
   try {
-    const { title, image, about, url, category, date } = req.body;
+    const { title, image, about, url, category, createdAt, updatedAt } =
+      req.body;
 
     const id = uuidv4();
 
@@ -34,6 +37,8 @@ const createToolPost = async (req, res) => {
       about,
       url,
       category,
+      createdAt,
+      updatedAt,
     });
 
     const savedTool = await newTool.save();

@@ -1,6 +1,7 @@
 const { timeStamp } = require("console");
 const mongoose = require("mongoose");
 const Schema = require("mongoose");
+const { type } = require("os");
 
 const ToolSchema = mongoose.Schema(
   {
@@ -18,6 +19,10 @@ const ToolSchema = mongoose.Schema(
     },
     category: {
       type: String,
+    },
+    date: {
+      type: Date,
+      default: Date.now,
     },
   },
   {

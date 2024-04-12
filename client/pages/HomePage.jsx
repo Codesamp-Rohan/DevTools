@@ -17,6 +17,7 @@ function HomePage() {
         const response = await axios.get("http://localhost:3000");
         // const response = await axios.get(`https://devtools-be.onrender.com`);
         setData(response.data);
+        console.log(response.createdAt);
       } catch (error) {
         console.log({ Error: error.message });
         toast.error("Not able to get the tools.");
@@ -58,7 +59,7 @@ function HomePage() {
   return (
     <>
       <div className="flex justify-center items-center">
-        <div className="flex flex-wrap justify-center w-fit">
+        <div className="flex flex-row justify-center w-fit">
           <div className="flex flex-wrap justify-center md:justify-start">
             {reverseData.map((note, index) => (
               <div
@@ -95,9 +96,18 @@ function HomePage() {
                     src="/icons/right-arrow.png"
                     alt="arrow"></img>
                 </a>
+                <h1>Posted {note.createdAt}</h1>
               </div>
             ))}
           </div>
+          <span className="w-[100%] lg:w-[85%] xl:w-[30%] hidden md:flex flex-col items-center border-x-[0.8px] border-x-[#282828] pt-10">
+            {/* <h1 className="hover:bg-[#ddd] w-full mx-2 p-2">hello</h1> */}
+            {reverseData.map((note, index) => (
+              <a key={index} className="hover:bg-[#ddd] w-full mx-2 p-2">
+                {note.title}
+              </a>
+            ))}
+          </span>
         </div>
       </div>
       {passwordVisible && (
