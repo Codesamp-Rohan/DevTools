@@ -24,6 +24,31 @@ const Form = () => {
     event.preventDefault();
 
     try {
+      if (formData.title === "") {
+        toast.error("Please enter the title.");
+        return;
+      }
+      if (formData.image === "") {
+        toast.error("Please enter the image url from Browser.");
+        return;
+      }
+      if (formData.about === "") {
+        toast.error("Please enter the about.");
+        return;
+      }
+      if (formData.url === "") {
+        toast.error("Please enter the link of the tool.");
+        return;
+      }
+      if (formData.category === "") {
+        toast.error("Please nter the category.");
+        return;
+      }
+      if (formData.date === "") {
+        toast.error("Please enter the date.");
+        return;
+      }
+
       const response = await axios.post(
         "https://devtools-be.onrender.com/create",
         formData
