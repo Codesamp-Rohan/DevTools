@@ -22,3 +22,27 @@ label {
     }
   }
 }
+
+/* width */
+.link--menu::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.link--menu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Handle */
+.link--menu::-webkit-scrollbar-thumb {
+  background: #cacaca;
+  border-radius: 8px;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+.link--menu::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

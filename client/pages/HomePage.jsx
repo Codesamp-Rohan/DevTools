@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 
-function HomePage() {
+function HomePage({ menu, setMenu }) {
   const [data, setData] = useState(null);
   const { id } = useParams();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [deleteItemId, setDeleteItemId] = useState(null); // State variable to store the id of the item to be deleted
-
-  const [menu, setMenu] = useState(false);
 
   // Get Tool
   useEffect(() => {
@@ -72,17 +70,12 @@ function HomePage() {
   return (
     <>
       <div className="flex justify-center items-center relative">
-        <button
-          onClick={() => setMenu(true)}
-          className="w-[20px] absolute top-2 right-2 md:top-4 md:right-4 flex z-[30]">
-          <img src="/icons/menu.png"></img>
-        </button>
         <div
           className="w-screen h-screen fixed bg-[#0000009c] top-0 z-50"
           onClick={() => setMenu(false)}
           style={{ display: menu ? "flex" : "none" }}></div>
         <span
-          className="fixed top-10 right-4 flex flex-col items-center border-[0.8px] border-[#282828] w-[300px] p-10 mt-10 bg-[#eee] z-[100] rounded-lg"
+          className="fixed top-10 right-4 flex flex-col items-center border-[0.8px] border-[#282828] w-[300px] h-[400px] p-10 mt-10 bg-[#eee] z-[100] rounded-lg overflow-y-scroll overflow-hidden link--menu"
           style={{ display: menu ? "flex" : "none" }}>
           <button
             onClick={() => setMenu(false)}

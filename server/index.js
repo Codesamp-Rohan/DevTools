@@ -16,6 +16,7 @@ const corsOptions = {
 server.use(express.json());
 server.use(bodyParser.json());
 server.use(cors(corsOptions));
+// server.use(cors());
 
 server.use("/", ToolRouter);
 
