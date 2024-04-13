@@ -71,21 +71,29 @@ function HomePage() {
       <div className="flex justify-center items-center relative">
         <button
           onClick={() => setMenu(true)}
-          className="w-[20px] absolute top-2 right-2 flex z-[30]">
+          className="w-[20px] absolute top-2 right-2 md:top-4 md:right-4 flex z-[30]">
           <img src="/icons/menu.png"></img>
         </button>
+        <div
+          className="w-screen h-screen fixed bg-[#0000009c] top-0 z-50"
+          onClick={() => setMenu(false)}
+          style={{ display: menu ? "flex" : "none" }}></div>
         <span
-          className="fixed top-10 right-4 flex flex-col items-center border-[0.8px] border-[#282828] w-[300px] p-10 mt-10 bg-[#eee] z-30"
+          className="fixed top-10 right-4 flex flex-col items-center border-[0.8px] border-[#282828] w-[300px] p-10 mt-10 bg-[#eee] z-[100] rounded-lg"
           style={{ display: menu ? "flex" : "none" }}>
           <button
             onClick={() => setMenu(false)}
-            className="absolute top-2 right-4">
-            X
+            className="absolute top-4 right-4 z-[100]">
+            <img className="w-[20px]" src="/icons/close.png"></img>
           </button>
 
           {/* <h1 className="hover:bg-[#ddd] w-full mx-2 p-2">hello</h1> */}
           {reverseData.map((note, index) => (
-            <a key={index} className="hover:bg-[#ddd] w-full mx-2 p-2">
+            <a
+              key={index}
+              href={note.url}
+              target="_blank"
+              className="hover:bg-[#ddd] w-full mx-2 p-2 rounded-md">
               {note.title}
             </a>
           ))}

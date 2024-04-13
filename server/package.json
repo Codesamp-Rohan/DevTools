@@ -17,6 +17,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "http": "^0.0.1-security",
+    "http-proxy": "^1.18.1",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.1",
     "node": "^18.20.1",
