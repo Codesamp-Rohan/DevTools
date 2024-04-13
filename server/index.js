@@ -26,7 +26,7 @@ server.get("/", (req, res) => {
     .json("Hello there, the website is running if you see this message.");
 });
 
-server.listen(3000, () => {
+server.listen("3000", () => {
   console.log("Server listening at port 3000");
 });
 
