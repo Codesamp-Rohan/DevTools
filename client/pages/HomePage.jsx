@@ -41,7 +41,10 @@ function HomePage() {
     }
 
     try {
-      await axios.delete(`http://localhost:3000/delete/${deleteItemId}`);
+      // await axios.delete(`http://localhost:3000/delete/${deleteItemId}`);
+      await axios.delete(
+        `https://devtools-be.onrender.com/delete/${deleteItemId}`
+      );
       setData(data.filter((tool) => tool._id !== deleteItemId)); // Update data state after deletion
       toast.success("The tool has been dequeued.");
     } catch (error) {
