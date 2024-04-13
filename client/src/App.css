@@ -41,8 +41,3 @@ label {
   border-radius: 8px;
   border-radius: 8px;
 }
-
-/* Handle on hover */
-.link--menu::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}

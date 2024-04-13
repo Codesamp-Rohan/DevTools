@@ -2,8 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
-function HomePage({ menu, setMenu }) {
+function HomePage({
+  menu,
+  setMenu,
+  mobileMenu,
+  setMobileMenu,
+  selectedCategory,
+  setSelectedCategory,
+}) {
   const [data, setData] = useState(null);
   const { id } = useParams();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -67,13 +75,53 @@ function HomePage({ menu, setMenu }) {
     return `${diffDays} days ago`;
   };
 
+  const filteredData = selectedCategory
+    ? reverseData.filter((tool) => tool.category === selectedCategory)
+    : reverseData;
+
   return (
     <>
+      {mobileMenu ? (
+        <div className="fixed w-screen h-screen bg-[#0000005d] z-[40]"></div>
+      ) : (
+        <></>
+      )}
       <div className="flex justify-center items-center relative">
-        <div
-          className="w-screen h-screen fixed bg-[#0000009c] top-0 z-50"
-          onClick={() => setMenu(false)}
-          style={{ display: menu ? "flex" : "none" }}></div>
+        {mobileMenu ? (
+          <aside className="fixed top-20 right-4 w-[60%] h-fit z-[50] bg-[#fff] md:hidden p-4 flex flex-col gap-4 shadow-2xl shadow-gray-700 rounded-lg">
+            <h1 className="text-[1.2rem] font-semibold monsy px-2">Menu</h1>
+            <button onClick={() => setMobileMenu(false)}>
+              <img
+                className="w-[20px] absolute top-5 right-5"
+                src="./icons/close.png"></img>
+            </button>
+            <select
+              id="category"
+              name="category"
+              value={selectedCategory} // Bind the selected category to the state variable
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-lg ring-1 ring-[#b7b7b7]">
+              <option value="">All</option>
+              <option value="UI/UX">UI/UX</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Designing">Designing</option>
+              <option value="Software Development">Software Development</option>
+              <option value="Deployment">Deployment</option>
+              <option value="AI Tool">AI Tool</option>
+              <option value="Other">Other</option>
+            </select>
+            <Link
+              to="/create"
+              className="flex items-center gap-2 text-[1rem] font-semibold bg-[#282828] hover:bg-[#121212] text-[#eee] rounded-lg px-[20px] py-2">
+              ADD{" "}
+              <img
+                className="w-[10px] invert"
+                src="/icons/right-arrow.png"></img>
+            </Link>
+          </aside>
+        ) : (
+          <></>
+        )}
         <span
           className="fixed top-10 right-4 flex flex-col items-center border-[0.8px] border-[#282828] w-[300px] h-[400px] p-10 mt-10 bg-[#eee] z-[100] rounded-lg overflow-y-scroll overflow-hidden link--menu"
           style={{ display: menu ? "flex" : "none" }}>
@@ -96,7 +144,7 @@ function HomePage({ menu, setMenu }) {
         </span>
         <div className="flex flex-row justify-center w-fit">
           <div className="flex flex-wrap justify-center md:justify-start relative">
-            {reverseData.map((note, index) => (
+            {filteredData.map((note, index) => (
               <div
                 key={index}
                 className="w-[350px] ring-1 ring-[#b2b2b2] p-4 rounded-2xl m-6 flex flex-col justify-between gap-4 tool--card">

@@ -9,15 +9,31 @@ export const ToolContext = createContext({});
 
 function App() {
   const [menu, setMenu] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   return (
     <>
       <Router>
-        <Navbar setMenu={setMenu} />
+        <Navbar
+          setMenu={setMenu}
+          setMobileMenu={setMobileMenu}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
         <Routes>
           <Route
             path="/"
-            element={<HomePage menu={menu} setMenu={setMenu} />}
+            element={
+              <HomePage
+                menu={menu}
+                setMenu={setMenu}
+                mobileMenu={mobileMenu}
+                setMobileMenu={setMobileMenu}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+              />
+            }
           />
           <Route path="/create" element={<Form />} />
         </Routes>
