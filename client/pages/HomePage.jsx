@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import EditForm from "../components/EditForm";
+import HandleDeletePass from "../components/DeletePass";
 
 function HomePage({
   menu,
@@ -18,12 +20,26 @@ function HomePage({
   const [password, setPassword] = useState("");
   const [deleteItemId, setDeleteItemId] = useState(null); // State variable to store the id of the item to be deleted
 
+  const [editForm, setEditForm] = useState(false);
+  const [editItemId, setEditItemId] = useState(null);
+  const [canEdit, setCanEdit] = useState(false);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    image: "",
+    about: "",
+    url: "",
+    category: "",
+    date: "",
+    paid: "",
+  });
+
   // Get Tool
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000");
-        // const response = await axios.get(`https://devtools-be.onrender.com`);
+        // const response = await axios.get("http://localhost:3000");
+        const response = await axios.get(`https://devtools-be.onrender.com`);
         setData(response.data);
         console.log(response.createdAt);
       } catch (error) {
@@ -47,10 +63,10 @@ function HomePage({
     }
 
     try {
-      await axios.delete(`http://localhost:3000/delete/${deleteItemId}`);
-      // await axios.delete(
-      //   `https://devtools-be.onrender.com/delete/${deleteItemId}`
-      // );
+      // await axios.delete(`http://localhost:3000/delete/${deleteItemId}`);
+      await axios.delete(
+        `https://devtools-be.onrender.com/delete/${deleteItemId}`
+      );
       setData(data.filter((tool) => tool._id !== deleteItemId)); // Update data state after deletion
       toast.success("The tool has been dequeued.");
     } catch (error) {
@@ -61,6 +77,72 @@ function HomePage({
       setPasswordVisible(false); // Hide password input modal
       setDeleteItemId(null); // Reset delete item id
     }
+  };
+
+  const handleEditClick = (id) => {
+    console.log(id);
+    setEditItemId(id);
+    // setEditForm(true);
+    setCanEdit(true);
+
+    const selectedTool = data.find((tool) => tool._id === id);
+    if (selectedTool) {
+      setFormData({
+        title: selectedTool.title,
+        image: selectedTool.image,
+        about: selectedTool.about,
+        url: selectedTool.url,
+        category: selectedTool.category,
+        date: selectedTool.date,
+        paid: selectedTool.paid,
+      });
+    }
+  };
+
+  const handleEditBtn = () => {
+    if (password === "edit") {
+      toast.success("Correct password, now you can edit.");
+      setEditForm(true);
+      setCanEdit(false);
+      setPassword("");
+    }
+  };
+
+  const editTool = async (event) => {
+    event.preventDefault();
+    try {
+      // const updateForm = await axios.put(
+      //   `http://localhost:3000/update/${editItemId}`,
+      //   formData
+      // );
+      const updateForm = await axios.put(
+        `https://devtools-be.onrender.com/update/${editItemId}`,
+        formData
+      );
+      const bbb = updateForm.data;
+      setFormData(bbb);
+      toast.success("Tool updated successfully.");
+      setEditForm(false);
+      // Refetch data after successful update
+      const response = await axios.get("https://devtools-be.onrender.com");
+      setData(response.data);
+    } catch (error) {
+      console.log({ Error: error.message });
+      toast.error("Failed to update tool.");
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    editTool(event);
   };
 
   if (!data) return null;
@@ -89,6 +171,25 @@ function HomePage({
         <></>
       )}
       <div className="flex justify-center items-center relative">
+        {/* Edit Form */}
+        {editForm ? (
+          <div
+            onClick={() => setEditForm(false)}
+            className="fixed w-screen h-screen top-0 bg-[#00000092] z-[50]"></div>
+        ) : (
+          <></>
+        )}
+        {editForm ? (
+          <EditForm
+            formData={formData}
+            setEditForm={setEditForm}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
+        ) : (
+          <></>
+        )}
+        {/*  */}
         {mobileMenu ? (
           <aside className="fixed top-20 right-4 w-[60%] h-fit z-[50] bg-[#fff] md:hidden p-4 flex flex-col gap-4 shadow-2xl shadow-gray-700 rounded-lg">
             <h1 className="text-[1.2rem] font-semibold monsy px-2">Menu</h1>
@@ -132,8 +233,6 @@ function HomePage({
             className="absolute top-4 right-4 z-[100]">
             <img className="w-[20px]" src="/icons/close.png"></img>
           </button>
-
-          {/* <h1 className="hover:bg-[#ddd] w-full mx-2 p-2">hello</h1> */}
           {reverseData.map((note, index) => (
             <a
               key={index}
@@ -151,6 +250,11 @@ function HomePage({
                 key={index}
                 className="w-[350px] ring-1 ring-[#b2b2b2] p-4 rounded-2xl m-6 flex flex-col justify-between gap-4 tool--card">
                 <span className="flex flex-col gap-4 relative">
+                  <button
+                    className="absolute bg-[#ddddddda] px-3 py-1 rounded-lg top-1 right-1 ring-1 ring-[#bbb]"
+                    onClick={() => handleEditClick(note._id)}>
+                    Edit
+                  </button>
                   <img
                     className="tool--image ring-1 ring-[#b2b2b2] h-[180px] object-cover"
                     src={note.image}
@@ -195,9 +299,21 @@ function HomePage({
         </div>
       </div>
       {passwordVisible && (
+        <HandleDeletePass
+          password={password}
+          setPassword={setPassword}
+          setPasswordVisible={setPasswordVisible}
+          deleteTool={deleteTool}
+        />
+      )}
+
+      {canEdit && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-[100]">
-          <div className="bg-white p-8 rounded-lg flex flex-col gap-4 w-[400px]">
-            <h2 className="text-lg font-bold">Enter Password</h2>
+          <div className="bg-white p-8 rounded-lg flex flex-col gap-4 sm:w-[400px] w-[300px]">
+            <h2 className="text-lg font-bold">Enter Tool Edit Password.</h2>
+            <p className="text-[0.8rem] font-bold text-[#ddd]">
+              Only Admin can do it.
+            </p>
             <input
               type="password"
               placeholder="Password"
@@ -205,21 +321,22 @@ function HomePage({
               onChange={(e) => setPassword(e.target.value)}
               className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-md ring-1 ring-[#b7b7b7]"
             />
-            <div className="flex justify-between">
+            <div className="flex justify-start">
               <button
-                onClick={() => setPasswordVisible(false)}
+                onClick={() => setCanEdit(false)}
                 className="text-gray-500 mr-4">
                 Cancel
               </button>
               <button
-                onClick={deleteTool}
+                onClick={handleEditBtn}
                 className="bg-red-500 text-white px-4 py-2 rounded">
-                Confirm Delete
+                Enter
               </button>
             </div>
           </div>
         </div>
       )}
+
       <Toaster />
     </>
   );

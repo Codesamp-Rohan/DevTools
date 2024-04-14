@@ -21,6 +21,18 @@ const Form = () => {
     }));
   };
 
+  const clearFormData = () => {
+    setFormData({
+      title: "",
+      image: "",
+      about: "",
+      url: "",
+      category: "",
+      date: "",
+      paid: "",
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -49,14 +61,14 @@ const Form = () => {
         toast.error("Please enter the date.");
         return;
       }
+      // const response = await axios.post(
+      //   "http://localhost:3000/create",
+      //   formData
+      // );
       const response = await axios.post(
-        "http://localhost:3000/create",
+        "https://devtools-be.onrender.com/create",
         formData
       );
-      // const response = await axios.post(
-      // "https://devtools-be.onrender.com/create",
-      // formData
-      // );
 
       const responseData = response.data; // Assuming the response data contains the updated form data
       console.log("Response Data: ", responseData);
@@ -65,6 +77,8 @@ const Form = () => {
     } catch (error) {
       console.error("Error:", error);
       toast.error("Not able to added the tool to the queue.");
+    } finally {
+      clearFormData();
     }
   };
 
