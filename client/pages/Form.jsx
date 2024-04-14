@@ -10,6 +10,7 @@ const Form = () => {
     url: "",
     category: "",
     date: "",
+    paid: "",
   });
 
   const handleChange = (event) => {
@@ -48,14 +49,14 @@ const Form = () => {
         toast.error("Please enter the date.");
         return;
       }
-      // const response = await axios.post(
-      //   "http://localhost:3000/create",
-      //   formData
-      // );
       const response = await axios.post(
-        "https://devtools-be.onrender.com/create",
+        "http://localhost:3000/create",
         formData
       );
+      // const response = await axios.post(
+      // "https://devtools-be.onrender.com/create",
+      // formData
+      // );
 
       const responseData = response.data; // Assuming the response data contains the updated form data
       console.log("Response Data: ", responseData);
@@ -68,7 +69,7 @@ const Form = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[80vh]">
+    <div className="flex justify-center items-center h-[90vh]">
       <div className="flex flex-col items-start gap-4 w-[90%] md:w-[40%]">
         <p className="font-semibold">
           You just got new stuff to show? Enter it down here😁
@@ -95,7 +96,7 @@ const Form = () => {
               type="text"
               value={formData.image}
               onChange={handleChange}
-              placeholder="image"
+              placeholder="image url"
             />
           </span>
           <span>
@@ -119,7 +120,7 @@ const Form = () => {
               type="text"
               value={formData.url}
               onChange={handleChange}
-              placeholder="url"
+              placeholder="tool url"
             />
           </span>
           <span>
@@ -149,8 +150,19 @@ const Form = () => {
               <option value="Software Development">Software Development</option>
               <option value="Deployment">Deployment</option>
               <option value="AI Tool">AI Tool</option>
+              <option value="Editor">Editor</option>
               <option value="Other">Other</option>
             </select>
+          </span>
+          <span>
+            <label>Paid or Free?</label>
+            <input
+              type="paid"
+              name="paid"
+              className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-lg ring-1 ring-[#b7b7b7]"
+              value={formData.paid}
+              onChange={handleChange}
+              placeholder="Paid or Free*"></input>
           </span>
           <button
             type="submit"

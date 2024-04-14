@@ -24,6 +24,10 @@ const ToolSchema = mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    paid: {
+      type: String,
+      default: "free",
+    },
   },
   {
     timeStamp: true,

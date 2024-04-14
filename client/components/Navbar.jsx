@@ -26,6 +26,7 @@ const Navbar = ({
             <option value="Software Development">Software Development</option>
             <option value="Deployment">Deployment</option>
             <option value="AI Tool">AI Tool</option>
+            <option value="Editor">Editor</option>
             <option value="Other">Other</option>
           </select>
         </span>

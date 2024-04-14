@@ -22,8 +22,8 @@ function HomePage({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get("http://localhost:3000");
-        const response = await axios.get(`https://devtools-be.onrender.com`);
+        const response = await axios.get("http://localhost:3000");
+        // const response = await axios.get(`https://devtools-be.onrender.com`);
         setData(response.data);
         console.log(response.createdAt);
       } catch (error) {
@@ -47,10 +47,10 @@ function HomePage({
     }
 
     try {
-      // await axios.delete(`http://localhost:3000/delete/${deleteItemId}`);
-      await axios.delete(
-        `https://devtools-be.onrender.com/delete/${deleteItemId}`
-      );
+      await axios.delete(`http://localhost:3000/delete/${deleteItemId}`);
+      // await axios.delete(
+      //   `https://devtools-be.onrender.com/delete/${deleteItemId}`
+      // );
       setData(data.filter((tool) => tool._id !== deleteItemId)); // Update data state after deletion
       toast.success("The tool has been dequeued.");
     } catch (error) {
@@ -82,7 +82,9 @@ function HomePage({
   return (
     <>
       {mobileMenu ? (
-        <div className="fixed w-screen h-screen bg-[#0000005d] z-[40]"></div>
+        <div
+          onClick={() => setMobileMenu(false)}
+          className="fixed w-screen h-screen bg-[#0000005d] z-[40]"></div>
       ) : (
         <></>
       )}
@@ -170,7 +172,12 @@ function HomePage({
                   <p className="monsy text-[0.85rem]">{note.about}</p>
                 </span>
                 <span className="flex flex-col gap-2">
-                  <h1>{calculateDaysAgo(note.date)}</h1>{" "}
+                  <span className="flex justify-between">
+                    <h1>{calculateDaysAgo(note.date)}</h1>{" "}
+                    <h1 className="px-2 py-1 bg-[#ddd] rounded-lg ring-1 ring-[#bbb]">
+                      {note.paid}
+                    </h1>
+                  </span>
                   <a
                     href={note.url}
                     target="_blank"
