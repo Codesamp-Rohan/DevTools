@@ -34,6 +34,9 @@ function HomePage({
     paid: "",
   });
 
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [adminLobby, setAdminLobby] = useState(false);
+
   // Get Tool
   useEffect(() => {
     const fetchData = async () => {
@@ -123,7 +126,7 @@ function HomePage({
       setFormData(bbb);
       toast.success("Tool updated successfully.");
       setEditForm(false);
-      // Refetch data after successful update
+      // const response = await axios.get("http://localhost:3000");
       const response = await axios.get("https://devtools-be.onrender.com");
       setData(response.data);
     } catch (error) {
@@ -144,6 +147,35 @@ function HomePage({
     event.preventDefault();
     editTool(event);
   };
+
+  const handleUser = () => {
+    setIsAdmin(false);
+    sessionStorage.setItem("isAdmin", "false");
+  };
+
+  const handleAdmin = () => {
+    if (password === "admin") {
+      setAdminLobby(true);
+      setIsAdmin(false);
+      sessionStorage.setItem("isAdmin", "true");
+      sessionStorage.setItem("isUser", "false");
+      console.log("handling Admin");
+      setPassword("");
+    }
+  };
+  useEffect(() => {
+    const storedIsAdmin = sessionStorage.getItem("isAdmin");
+
+    // Check if storedIsAdmin is true, indicating that the user has already entered as an admin
+    if (storedIsAdmin === "true") {
+      setAdminLobby(true);
+      setIsAdmin(false);
+    }
+    if (storedIsAdmin === "false") {
+      setAdminLobby(false);
+      setIsAdmin(false);
+    }
+  }, []);
 
   if (!data) return null;
 
@@ -188,6 +220,41 @@ function HomePage({
           />
         ) : (
           <></>
+        )}
+        {/* ADMIN CODE UI */}
+        {isAdmin && (
+          <>
+            <div className="w-screen h-screen z-[50] fixed top-0 bg-[#00000092] backdrop-blur-md"></div>
+            <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[#fff] z-[50] rounded-lg shadow-xl">
+              <div className="bg-white p-8 rounded-lg flex flex-col gap-4 sm:w-[400px] w-[300px]">
+                <span>
+                  <h2 className="text-lg font-bold">Admin here?</h2>
+                  <p className="text-[0.8rem] font-bold text-[#ddd]">
+                    If yes, enter the password.
+                  </p>
+                </span>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-[#eee] text-black placeholder-text-[#9c9c9c] outline-none px-[10px] py-2 w-full rounded-md ring-1 ring-[#b7b7b7]"
+                />
+                <div className="flex justify-between">
+                  <button
+                    onClick={() => handleUser(true)}
+                    className="text-[#fff] mr-4 bg-blue-400 py-2 px-4 rounded">
+                    Enter as User
+                  </button>
+                  <button
+                    onClick={() => handleAdmin(true)}
+                    className="bg-red-500 text-white px-4 py-2 rounded">
+                    Enter as Admin
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
         )}
         {/*  */}
         {mobileMenu ? (
@@ -250,11 +317,13 @@ function HomePage({
                 key={index}
                 className="w-[350px] ring-1 ring-[#b2b2b2] p-4 rounded-2xl m-6 flex flex-col justify-between gap-4 tool--card">
                 <span className="flex flex-col gap-4 relative">
-                  <button
-                    className="absolute bg-[#ddddddda] px-3 py-1 rounded-lg top-1 right-1 ring-1 ring-[#bbb]"
-                    onClick={() => handleEditClick(note._id)}>
-                    Edit
-                  </button>
+                  {adminLobby && (
+                    <button
+                      className="absolute bg-[#ddddddda] px-3 py-1 rounded-lg top-1 right-1 ring-1 ring-[#bbb]"
+                      onClick={() => handleEditClick(note._id)}>
+                      Edit
+                    </button>
+                  )}
                   <img
                     className="tool--image ring-1 ring-[#b2b2b2] h-[180px] object-cover"
                     src={note.image}
